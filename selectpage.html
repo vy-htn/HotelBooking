@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Royal Hotel</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.js"></script>
+    
+</head>
+<body>
+    <header>
+        <img src="hotel_image.jpeg" alt="The Royal Hotel">
+    </header>
+    <main>
+        <form action="/book" method="post">
+            <div>
+                <div class="date-range">
+                    <label for="date-range">Select Dates:</label>
+                    <input type="text" id="date-range">
+                </div>
+                <script>
+                    $(function() {
+                        $('#date-range').daterangepicker({
+                            autoUpdateInput: false,
+                            opens: 'left', 
+                            locale: {
+                                format: 'YYYY-MM-DD',
+                            }
+                        });
+            
+                        $('#date-range').on('apply.daterangepicker', function(ev, picker) {
+                            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+                        });
+            
+                        $('#date-range').on('cancel.daterangepicker', function(ev, picker) {
+                            $(this).val('');
+                        });
+                    });
+                </script>
+                <label for="room">Room:</label>
+                <div class="room-selection">
+                    <p id="toggle" style="cursor:pointer;">1 Room, 2 Guests</p>
+                    
+                </div>
+                <script src="selectroom.js"></script>
+
+                <label for="promo_code">Promo Code:</label>
+                <input type="text" id="promo_code" name="promo_code">
+            </div>
+        </form>
+        <div id="guests" class="guests">
+            <div class="room" id="room1">
+                <div class="guest-type">
+                    <label for="adults1">Adults (Ages 12 or more)</label><br>
+                    <div id="container">
+                        <button>-</button>
+                        <input type="text" id="guest-number" name="adults1">
+                        <button>+</button>
+                    </div>
+                </div>
+                <div class="guest-type">
+                    <label for="children1">Children (Ages 5-11)</label><br>
+                    <div id="container">
+                        <button>-</button>
+                        <input type="text" id="guest-number" name="children1">
+                        <button>+</button>
+                    </div>
+                </div>
+                <div class="guest-type">
+                    <label for="infants1">Infants (Under 5)</label><br>
+                    <div id="container">
+                        <button>-</button>
+                        <input type="text" id="guest-number" name="infants1">
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="room-buttons">
+                <button type="button" onclick="addRoom()">Add additional room</button><br>
+                <button type="submit">Done</button>
+            </div>
+        </div>
+        
+        <section>
+            <div id="room-options">
+                <h3>Room Options</h3>
+            </div>
+
+            <div id="room-info">
+                <h2>Price for 2-night stay in Residence King Ocean View</h2>
+                <p>VND 5,452,556</p>
+                <input type="button" value="Book Now">
+            </div>
+        </section>
+    </main>
+   
+</body>
+</html>
