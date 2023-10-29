@@ -5,13 +5,14 @@
     <link rel="stylesheet" href="styles.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.js"></script>
     
 </head>
 <body>
     <header>
-        <img src="hotel_image.jpeg" alt="The Royal Hotel">
+        <img src="images/hotel_image.jpeg" alt="The Royal Hotel">
     </header>
     <main>
         <form action="/book" method="post">
@@ -25,6 +26,9 @@
                         $('#date-range').daterangepicker({
                             autoUpdateInput: false,
                             opens: 'left', 
+                            minDate: moment(), 
+                            startDate: moment(), 
+                            endDate: moment().add(1, 'days'), 
                             locale: {
                                 format: 'YYYY-MM-DD',
                             }
@@ -42,7 +46,6 @@
                 <label for="room">Room:</label>
                 <div class="room-selection">
                     <p id="toggle" style="cursor:pointer;">1 Room, 2 Guests</p>
-                    
                 </div>
                 <script src="selectroom.js"></script>
 
@@ -51,31 +54,30 @@
             </div>
         </form>
         <div id="guests" class="guests">
-            <div class="room" id="room1">
-                <div class="guest-type">
-                    <label for="adults1">Adults (Ages 12 or more)</label><br>
-                    <div id="container">
-                        <button>-</button>
-                        <input type="text" id="guest-number" name="adults1">
-                        <button>+</button>
-                    </div>
-                </div>
-                <div class="guest-type">
-                    <label for="children1">Children (Ages 5-11)</label><br>
-                    <div id="container">
-                        <button>-</button>
-                        <input type="text" id="guest-number" name="children1">
-                        <button>+</button>
-                    </div>
-                </div>
-                <div class="guest-type">
-                    <label for="infants1">Infants (Under 5)</label><br>
-                    <div id="container">
-                        <button>-</button>
-                        <input type="text" id="guest-number" name="infants1">
-                        <button>+</button>
-                    </div>
-                </div>
+            <div class="room" id="room-container">
+                <table id="table">
+                    <tr>
+                        <td></td>
+                        <td><div class="label">
+                            <label for="adults1">Adults </label><br>
+                            <label for="adults1">(Ages 12 or more)</label><br>
+                        </div></td>
+                        <td><div class="label">
+                            <label for="children1">Children</label><br>
+                            <label for="children1">(Ages 5-11)</label><br>
+                        </div></td>
+                        <td><div class="label">
+                            <label for="infants1">Infants </label><br>
+                            <label for="infants1">(Under 5)</label><br>
+                        </div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="room-label"><label >Room 1:</label></div></td>
+                        <td><div class="guest-type"><div id="container"><button>-</button><input type="text" class="guest-number" name="adults1"><button>+</button></div></div></td>
+                        <td><div class="guest-type"><div id="container"><button>-</button><input type="text" class="guest-number" name="children1"><button>+</button></div></div></td>
+                        <td><div class="guest-type"><div id="container"><button>-</button><input type="text" class="guest-number" name="infants1"><button>+</button></div></div></td>
+                    </tr>
+                </table>
             </div>
             <div class="room-buttons">
                 <button type="button" onclick="addRoom()">Add additional room</button><br>
