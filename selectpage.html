@@ -43,9 +43,9 @@
                         });
                     });
                 </script>
-                <label for="room">Room:</label>
+                <label for="room">Select rooms and guests:</label>
                 <div class="room-selection">
-                    <p id="toggle" style="cursor:pointer;">1 Room, 2 Guests</p>
+                    <p id="toggle" style="cursor:pointer;">1 Room, 1 Guest</p>
                 </div>
                 <script src="selectroom.js"></script>
 
@@ -64,24 +64,21 @@
                         </div></td>
                         <td><div class="label">
                             <label for="children1">Children</label><br>
-                            <label for="children1">(Ages 5-11)</label><br>
+                            <label for="children1">(Ages 0-11)</label><br>
                         </div></td>
-                        <td><div class="label">
-                            <label for="infants1">Infants </label><br>
-                            <label for="infants1">(Under 5)</label><br>
-                        </div></td>
+                       
                     </tr>
                     <tr>
                         <td><div class="room-label"><label >Room 1:</label></div></td>
-                        <td><div class="guest-type"><div id="container"><button>-</button><input type="text" class="guest-number" name="adults1"><button>+</button></div></div></td>
-                        <td><div class="guest-type"><div id="container"><button>-</button><input type="text" class="guest-number" name="children1"><button>+</button></div></div></td>
-                        <td><div class="guest-type"><div id="container"><button>-</button><input type="text" class="guest-number" name="infants1"><button>+</button></div></div></td>
+                        <td><div class="guest-type"><div id="container"><button onclick="updateGuests(this, -1)" disabled="true">-</button><input type="text" class="guest-number" name="adults1" value="1"><button onclick="updateGuests(this, 1)">+</button></div></div></td>
+                        <td><div class="guest-type"><div id="container"><button onclick="updateGuests(this, -1)" disabled="true">-</button><input type="text" class="guest-number" name="children1" value="0"><button onclick="updateGuests(this, 1)">+</button></div></div></td>
+
                     </tr>
                 </table>
             </div>
             <div class="room-buttons">
                 <button type="button" onclick="addRoom()">Add additional room</button><br>
-                <button type="submit">Done</button>
+                <button type="submit" onclick="loadRoom()">Done</button>
             </div>
         </div>
         
