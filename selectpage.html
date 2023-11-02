@@ -70,9 +70,24 @@
                     </tr>
                     <tr>
                         <td><div class="room-label"><label >Room 1:</label></div></td>
-                        <td><div class="guest-type"><div id="container"><button onclick="updateGuests(this, -1)" disabled="true">-</button><input type="text" class="guest-number" name="adults1" value="1"><button onclick="updateGuests(this, 1)">+</button></div></div></td>
-                        <td><div class="guest-type"><div id="container"><button onclick="updateGuests(this, -1)" disabled="true">-</button><input type="text" class="guest-number" name="children1" value="0"><button onclick="updateGuests(this, 1)">+</button></div></div></td>
-
+                        <td>
+                            <div class="guest-type">
+                                <div id="container">
+                                    <button onclick="updateGuests(this, -1)" disabled="true">-</button>
+                                    <label class="guest-number" name="adults1">1</label>
+                                    <button onclick="updateGuests(this, 1)">+</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="guest-type">
+                                <div id="container">
+                                    <button onclick="updateGuests(this, -1)" disabled="true">-</button>
+                                    <label class="guest-number" name="children1">0</label>
+                                    <button onclick="updateGuests(this, 1)" data-type="children">+</button>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </div>

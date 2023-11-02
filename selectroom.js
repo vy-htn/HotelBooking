@@ -20,8 +20,24 @@ function addRoom() {
 
     newRow.innerHTML = `
         <td><div class="room-label"><label>Room `+roomCount+` : </label></div></td>
-        <td><div class="guest-type"><div id="container"><button onclick="updateGuests(this, -1)" disabled="true">-</button><input type="text" class="guest-number" name="adults1" value="1"><button onclick="updateGuests(this, 1)">+</button></div></div></td>
-        <td><div class="guest-type"><div id="container"><button onclick="updateGuests(this, -1)" disabled="true">-</button><input type="text" class="guest-number" name="children1" value="0"><button onclick="updateGuests(this, 1)">+</button></div></div></td>
+        <td>
+            <div class="guest-type">
+                <div id="container">
+                    <button onclick="updateGuests(this, -1)" disabled="true">-</button>
+                    <label class="guest-number" name="adults1">1</label>
+                    <button onclick="updateGuests(this, 1)">+</button>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="guest-type">
+                <div id="container">
+                    <button onclick="updateGuests(this, -1)" disabled="true">-</button>
+                    <label class="guest-number" name="children1">0</label>
+                    <button onclick="updateGuests(this, 1)" data-type="children">+</button>
+                </div>
+            </div>
+        </td>
         <td><button class="delete-room"  style="background: none; border: none;"> <i class="fa-solid fa-trash" style="color: #0c84d3;"></i></button></td>
     `;
  
@@ -44,32 +60,47 @@ function addRoom() {
     });
 }
 function updateGuests(button, increment) {
-    
     if (button && increment !== undefined) {
-        var input = button.parentNode.querySelector(".guest-number");
+        var label = button.parentNode.querySelector(".guest-number");
+        var newValue = Math.max(0, parseInt(label.textContent) + increment);
+        label.textContent = newValue;
 
-        var newValue = Math.max(0, parseInt(input.value) + increment);
-        input.value = newValue;
         var minusButton = button.parentNode.querySelector('button[onclick^="updateGuests(this, -1)"]');
+        var plusButton = button.parentNode.querySelector('button[onclick^="updateGuests(this, 1)"]');
 
-        if (input.name.startsWith("adults")) {
+        if (label.getAttribute('name').startsWith("adults")) {
             minusButton.disabled = (newValue <= 1);
-        } else if (input.name.startsWith("children")) {
+        } else if (label.getAttribute('name').startsWith("children")) {
             minusButton.disabled = (newValue <= 0);
         }
 
+        var row = button.closest('tr'); 
+
+        var adultsInRow = parseInt(row.querySelector('label[name="adults1"]').textContent);
+        var childrenInRow = parseInt(row.querySelector('label[name="children1"]').textContent);
+        var totalGuestsInRow = adultsInRow + childrenInRow;
+        console.log(totalGuestsInRow.toString());
+
+        var plusButtonsAdultsInRow = row.querySelectorAll('button[onclick^="updateGuests(this, 1"]');
+        for (var i = 0; i < plusButtonsAdultsInRow.length; i++) {
+            plusButtonsAdultsInRow[i].disabled = (totalGuestsInRow >= 10|| adultsInRow >= 10);
+        }
+
+        var plusButtonsChildrenInRow = row.querySelectorAll('button[onclick^="updateGuests(this, 1"][data-type="children"]');
+        for (var i = 0; i < plusButtonsChildrenInRow.length; i++) {
+            plusButtonsChildrenInRow[i].disabled = (totalGuestsInRow >= 10 || childrenInRow >= 4);
+        }
     }
 
-
-    var adultsInputs = document.querySelectorAll('input[name="adults1"]');
-    var childrenInputs = document.querySelectorAll('input[name="children1"]');
+    var adultsLabels = document.querySelectorAll('label[name="adults1"]');
+    var childrenLabels = document.querySelectorAll('label[name="children1"]');
 
     var adults = 0;
     var children = 0;
     
-    for (var i = 0; i < adultsInputs.length; i++) {
-        adults += parseInt(adultsInputs[i].value);
-        children += parseInt(childrenInputs[i].value);
+    for (var i = 0; i < adultsLabels.length; i++) {
+        adults += parseInt(adultsLabels[i].textContent);
+        children += parseInt(childrenLabels[i].textContent);
     }
 
     document.getElementById("toggle").innerText = roomCount + " Room, " +  (parseInt(adults) + parseInt(children)) + " Guests";
