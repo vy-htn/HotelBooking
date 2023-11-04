@@ -3,15 +3,24 @@
 <head>
     <title>The Royal Hotel</title>
     <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.js"></script>
-    
+    <script src="selectroom.js"></script>
+
 </head>
 <body>
     <header>
+        <div class="navbar">
+            <a href="#home">The Royal </a>
+            <a href="#availability">Availability</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="#policies">Policies</a>
+          </div>
         <img src="images/hotel_image.jpeg" alt="The Royal Hotel">
     </header>
     <main>
@@ -35,7 +44,7 @@
                         });
             
                         $('#date-range').on('apply.daterangepicker', function(ev, picker) {
-                            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+                            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' → ' + picker.endDate.format('YYYY-MM-DD'));
                         });
             
                         $('#date-range').on('cancel.daterangepicker', function(ev, picker) {
@@ -51,6 +60,7 @@
 
                 <label for="promo_code">Promo Code:</label>
                 <input type="text" id="promo_code" name="promo_code">
+                <button type="button" id="check-availability" >CHECK AVAILABILITY</button>
             </div>
         </form>
         <div id="guests" class="guests">
@@ -66,7 +76,6 @@
                             <label for="children1">Children</label><br>
                             <label for="children1">(Ages 0-11)</label><br>
                         </div></td>
-                       
                     </tr>
                     <tr>
                         <td><div class="room-label"><label >Room 1:</label></div></td>
@@ -93,7 +102,7 @@
             </div>
             <div class="room-buttons">
                 <button type="button" onclick="addRoom()">Add additional room</button><br>
-                <button type="submit" onclick="loadRoom()">Done</button>
+                <button type="submit" >Done</button>
             </div>
         </div>
         

@@ -105,4 +105,30 @@ function updateGuests(button, increment) {
 
     document.getElementById("toggle").innerText = roomCount + " Room, " +  (parseInt(adults) + parseInt(children)) + " Guests";
 }
-
+$(document).ready(function() {
+$('#check-availability').click(async function() {
+    const dateRange = $('#date-range').val().split(' → ').map(date => new Date(date));
+    const roomGuestInfo = $('#toggle').text().split(', ');
+    const rooms = parseInt(roomGuestInfo[0].split(' ')[0]);
+    const guests = parseInt(roomGuestInfo[1].split(' ')[0]);
+    
+  
+    const response = await fetch('http://localhost:3001/book', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ dateRange: dateRange, guests: guests, roomnumbers: rooms })
+      
+    });
+  
+    if (response.ok) {
+        const roomType = await response.json();
+        alert('Room type available: ' + roomType.type);
+      } else {
+        const errorMessage = await response.text();
+        alert('Error: ' + errorMessage);
+      }
+  });
+});
