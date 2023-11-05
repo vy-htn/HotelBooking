@@ -5,10 +5,10 @@ const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
 const path = require('path');
 const app = express();
+
 app.use(cors());
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname,'public')));
-
 app.use('/images', express.static('images'));
 
 mongoose.connect('mongodb://localhost:27017/hotel_booking',{ useNewUrlParser: true, useUnifiedTopology: true }) 
@@ -143,7 +143,7 @@ app.post('/book', async (req, res) => {
     
   });
   app.get('/home', (req, res) => {
-    res.render('home');
+    res.render('homepage');
   });
 
   app.get('/availability', async (req, res) => {
@@ -155,7 +155,24 @@ app.post('/book', async (req, res) => {
   app.get('/about', (req, res) => {
     res.render('about');
   });
-  
+  app.get('/beachclub', (req, res) => {
+    res.render('beachclub');
+  });
+  app.get('/dining', (req, res) => {
+    res.render('dining');
+  });
+  app.get('/rooms', (req, res) => {
+    res.render('rooms');
+  });
+  app.get('/specialoffers', (req, res) => {
+    res.render('specialoffers');
+  });
+  app.get('/meetings&events', (req, res) => {
+    res.render('meetingsevents');
+  });
+  app.get('/facilities', (req, res) => {
+    res.render('facilities');
+  });
   
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

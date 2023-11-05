@@ -41,7 +41,6 @@ form {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    max-width: 800px;
 }
 
 form div {
@@ -53,11 +52,66 @@ form div {
 form label, form select, form input[type="text"], form input[type="submit"] {
     margin: 10px;
 }
-
-form input[type="date"] {
-    width: 100%;
+.date-range {
+    position: relative;
+    width: 200px;
 }
 
+.date-range label {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: white;
+    padding: 0 5px;
+}
+
+.date-range input {
+    width: 100%;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.room-selection {
+    position: relative;
+    width: 250px;
+}
+
+.room-selection label {
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    background: white;
+    padding: 0 5px;
+}
+
+.room-selection p {
+    width: 100%;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+.promo {
+    position: relative;
+    width: 200px;
+}
+
+.promo label {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: white;
+    padding: 0 5px;
+}
+
+.promo input {
+    width: 100%;
+    border: 1px solid black;
+    padding: 10px;
+}
+.label{
+    text-align: center;
+    margin: 20px;
+}
 section {
     display: flex;
     justify-content: space-between;
@@ -100,10 +154,7 @@ section {
     }
   
 }
-.room-selection {
-    display: flex;
-    flex-direction: column;
-}
+
 .guests {
     display: none;
     flex-direction: column;
@@ -122,10 +173,7 @@ section {
     text-align: center;
     align-items: center;}
 
-.label{
-    margin-bottom: 20px;
-    text-align: center;
-}
+
 .room-buttons {
     display: flex;
     justify-content: space-between;
