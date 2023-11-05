@@ -106,40 +106,39 @@ app.get('/api/roomtypes', async (req, res) => {
 app.use('/api/rooms', require("./routes/rooms"));
 
 app.post('/book', async (req, res) => {
-    const { dateRange, guests, room_numbers } = req.body;
-  
+    const { checkInDate, checkOutDate, guests} = req.body;
     const client = new MongoClient('mongodb://localhost:27017/hotel_booking');
     await client.connect();
   
-    // Get the collections
     const roomtypes = client.db("hotel_booking").collection("roomtypes");
     const rooms = client.db("hotel_booking").collection("rooms");
-  
+    
     const suitableRoomTypes = await roomtypes.find({ capacity: { $gte: guests } }).toArray();
-  
-    for (let roomType of suitableRoomTypes) {
-      const availableRooms = await rooms.find({
-        type: roomType.type,
-        status: "Available",
-        bookings: {
-          $not: {
-            $elemMatch: {
-              startDate: { $lt: dateRange.endDate },
-              endDate: { $gt: dateRange.startDate }
-            }
-          }
+    console.log("Suitable Room Types:");
+    suitableRoomTypes.forEach(roomType => {
+        console.log(roomType);
+    });
+    
+ 
+    let suitableRooms = [];
+    for (const roomType of suitableRoomTypes) {
+        const availableRooms = await rooms.find({
+            type: roomType.type,
+        }).toArray();
+        if (availableRooms.length > 0) {
+            suitableRooms.push(roomType);
         }
-      }).toArray();
-  
-      if (availableRooms.length > 0) {
-        res.json(roomType);
-        await client.close();
-        return;
-      }
     }
-  
-    res.status(404).send('No rooms available that can accommodate the number of guests.');
+    if(suitableRooms.length > 0){
+      res.json(suitableRooms);
+      await client.close();
+    }
+    
+    else{
+      res.status(404).send('No rooms available that can accommodate the number of guests.');
     await client.close();
+    }
+    
   });
   
   

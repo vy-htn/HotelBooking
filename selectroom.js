@@ -112,23 +112,66 @@ $('#check-availability').click(async function() {
     const rooms = parseInt(roomGuestInfo[0].split(' ')[0]);
     const guests = parseInt(roomGuestInfo[1].split(' ')[0]);
     
-  
-    const response = await fetch('http://localhost:3001/book', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ dateRange: dateRange, guests: guests, roomnumbers: rooms })
-      
-    });
-  
-    if (response.ok) {
-        const roomType = await response.json();
-        alert('Room type available: ' + roomType.type);
-      } else {
-        const errorMessage = await response.text();
-        alert('Error: ' + errorMessage);
-      }
+    console.log(guests);
+    console.log(rooms);
+    const checkInDate = dateRange[0].toISOString().split('T')[0];
+    const checkOutDate = dateRange[1].toISOString().split('T')[0];
+
+    console.log({ checkInDate, checkOutDate });
+    try {
+        const response = await fetch('http://localhost:3001/book', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ checkInDate, checkOutDate, guests }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data:', typeof data); 
+              console.log('Success:', data);
+              const roomsContainer = document.getElementById('room-options');
+              data.forEach(room => {
+                const roomElement = document.createElement('div');
+                roomElement.innerHTML = `
+                      <img src="${room.imagePath}" alt="Room" />
+                       <h2>Type: ${room.type}</h2>
+                       <p>Capacity: ${room.capacity}</p>
+                       <p>Price per night: ${room.price_per_night}</p>
+                       <p>Amenities:</p>
+                       <ul>
+                         <li>Breakfast: ${room.amenities.breakfast ? 'Yes' : 'No'}</li>
+                         <li>Accessible: ${room.amenities.accessible ? 'Yes' : 'No'}</li>
+                       </ul>
+                     `;
+                roomsContainer.appendChild(roomElement);
+            });
+          })
+          .catch((error) => {
+              console.error('Error:', error);
+          })
+    }catch(error){
+        alert('Error: ' + error.message);
+    }
+        
+        
+    //     if (!response.ok) throw new Error(await response.text());
+    
+    //     const room = await response.json();
+    //     document.getElementById('room-options').innerHTML = `
+    //       <img src="${room.imagePath}" alt="Room" />
+    //       <h2>Type: ${room.type}</h2>
+    //       <p>Capacity: ${room.capacity}</p>
+    //       <p>Price per night: ${room.price_per_night}</p>
+    //       <p>Amenities:</p>
+    //       <ul>
+    //         <li>Breakfast: ${room.amenities.breakfast ? 'Yes' : 'No'}</li>
+    //         <li>Accessible: ${room.amenities.accessible ? 'Yes' : 'No'}</li>
+    //       </ul>
+    //     `;
+    //   } catch (error) {
+    //     alert('Error: ' + error.message);
+    //   }
   });
 });
