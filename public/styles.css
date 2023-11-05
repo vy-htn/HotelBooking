@@ -147,7 +147,7 @@ section {
     display: inline;
 }
 #room-container {
-    max-height: calc(5 * 60px); /* Adjust based on the height of your room div */
+    max-height: calc(5 * 60px); 
     overflow-y: auto;
 }
 .room-header{
@@ -165,6 +165,42 @@ section {
   margin: 4px 2px;
   cursor: pointer;
   font-family: "Montserrat";
+  transition: background-color 0.3s ease-in-out;
+  
   
 }
+#room-options div{
+    margin-right: 10px;
+}
+#room-options img{
+    height: 20rem;
+    width: 25rem;
+}
+.room-options-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.select-button button {
+    background-color: #800020;
+    padding: 10px 20px;
+    color: white;
+    font-family: "Montserrat";
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    
+}
+button:hover {
+    
+    background-color: rgba(128, 0, 32, 0.5);
+
+}
+
+
 

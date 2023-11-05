@@ -135,8 +135,11 @@ $('#check-availability').click(async function() {
               data.forEach(room => {
                 const roomElement = document.createElement('div');
                 roomElement.innerHTML = `
-                      <img src="${room.imagePath}" alt="Room" />
-                       <h2>Type: ${room.type}</h2>
+                      <div class="image">  
+                      <img src="${room.imagePath}" alt="Room" /></div>
+                       <h2> ${room.type}</h2>
+                        <div class= "room-options-container">
+                      <div class="room-description">
                        <p>Capacity: ${room.capacity}</p>
                        <p>Price per night: ${room.price_per_night}</p>
                        <p>Amenities:</p>
@@ -144,6 +147,10 @@ $('#check-availability').click(async function() {
                          <li>Breakfast: ${room.amenities.breakfast ? 'Yes' : 'No'}</li>
                          <li>Accessible: ${room.amenities.accessible ? 'Yes' : 'No'}</li>
                        </ul>
+                       </div>
+                       <div class="select-button"><button 
+                     >Select</button></div> 
+                       </div>
                      `;
                 roomsContainer.appendChild(roomElement);
             });

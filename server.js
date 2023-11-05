@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
+const path = require('path');
 const app = express();
 app.use(cors());
-
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname,'public')));
 
 app.use('/images', express.static('images'));
 
@@ -139,6 +141,19 @@ app.post('/book', async (req, res) => {
     await client.close();
     }
     
+  });
+  app.get('/home', (req, res) => {
+    res.render('home');
+  });
+
+  app.get('/availability', async (req, res) => {
+      res.render('selectpage');
+  });
+  app.get('/contact', (req, res) => {
+    res.render('contact');
+  });
+  app.get('/about', (req, res) => {
+    res.render('about');
   });
   
   

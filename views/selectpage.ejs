@@ -15,11 +15,11 @@
 <body>
     <header>
         <div class="navbar">
-            <a href="#home">The Royal </a>
-            <a href="#availability">Availability</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-            <a href="#policies">Policies</a>
+            <a href="/home">The Royal </a>
+            <a href="/availability">Availability</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+            <a href="/policies">Policies</a>
           </div>
         <img src="images/hotel_image.jpeg" alt="The Royal Hotel">
     </header>
@@ -32,17 +32,19 @@
                 </div>
                 <script>
                     $(function() {
+                        var start = moment();
+                        var end = moment().add(1, 'days');
                         $('#date-range').daterangepicker({
                             autoUpdateInput: false,
                             opens: 'left', 
-                            minDate: moment(), 
-                            startDate: moment(), 
-                            endDate: moment().add(1, 'days'), 
+                            minDate: start, 
+                            startDate: start, 
+                            endDate: end, 
                             locale: {
                                 format: 'YYYY-MM-DD',
                             }
                         });
-            
+                        $('#date-range').val(start.format('YYYY-MM-DD') + ' → ' + end.format('YYYY-MM-DD'));
                         $('#date-range').on('apply.daterangepicker', function(ev, picker) {
                             $(this).val(picker.startDate.format('YYYY-MM-DD') + ' → ' + picker.endDate.format('YYYY-MM-DD'));
                         });
