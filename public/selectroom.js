@@ -43,12 +43,16 @@ function addRoom() {
  
     table.appendChild(newRow);
     updateGuests();
+    var adultsInRow = parseInt(newRow.querySelector('label[name="adults1"]').textContent);
+    var childrenInRow = parseInt(newRow.querySelector('label[name="children1"]').textContent);
+    var totalGuestsInRow = adultsInRow + childrenInRow;
+    guests.push(totalGuestsInRow);
 
     newRow.querySelector('.delete-room').addEventListener('click', function() {
         table.removeChild(newRow);
-
+        
         roomCount--;
-
+        
         if (roomCount < 10){
             addButton.disabled = false;
         }
@@ -57,8 +61,10 @@ function addRoom() {
             rooms[i].textContent = 'Room ' + (i + 1) + ' : ';
         }
         updateGuests();
+        guests.splice(roomCount, 1);
     });
 }
+var guests = [null,1];
 function updateGuests(button, increment) {
     if (button && increment !== undefined) {
         var label = button.parentNode.querySelector(".guest-number");
@@ -75,21 +81,26 @@ function updateGuests(button, increment) {
         }
 
         var row = button.closest('tr'); 
-
+        
         var adultsInRow = parseInt(row.querySelector('label[name="adults1"]').textContent);
         var childrenInRow = parseInt(row.querySelector('label[name="children1"]').textContent);
         var totalGuestsInRow = adultsInRow + childrenInRow;
         console.log(totalGuestsInRow.toString());
-
+        
         var plusButtonsAdultsInRow = row.querySelectorAll('button[onclick^="updateGuests(this, 1"]');
         for (var i = 0; i < plusButtonsAdultsInRow.length; i++) {
-            plusButtonsAdultsInRow[i].disabled = (totalGuestsInRow >= 10|| adultsInRow >= 10);
+            plusButtonsAdultsInRow[i].disabled = (totalGuestsInRow >= 6|| adultsInRow >= 6);
         }
 
         var plusButtonsChildrenInRow = row.querySelectorAll('button[onclick^="updateGuests(this, 1"][data-type="children"]');
         for (var i = 0; i < plusButtonsChildrenInRow.length; i++) {
-            plusButtonsChildrenInRow[i].disabled = (totalGuestsInRow >= 10 || childrenInRow >= 4);
+            plusButtonsChildrenInRow[i].disabled = (totalGuestsInRow >= 6 || childrenInRow >= 2);
         }
+        var roomNumber = button.closest('tr').rowIndex;
+        console.log('room:'+roomNumber);
+        guests[roomNumber] = totalGuestsInRow;
+        console.log(guests[roomNumber]);
+
     }
 
     var adultsLabels = document.querySelectorAll('label[name="adults1"]');
@@ -110,28 +121,36 @@ $('#check-availability').click(async function() {
     const dateRange = $('#date-range').val().split(' → ').map(date => new Date(date));
     const roomGuestInfo = $('#toggle').text().split(', ');
     const rooms = parseInt(roomGuestInfo[0].split(' ')[0]);
-    const guests = parseInt(roomGuestInfo[1].split(' ')[0]);
     
-    console.log(guests);
+    
+    console.log(guests[1]);
     console.log(rooms);
     const checkInDate = dateRange[0].toISOString().split('T')[0];
     const checkOutDate = dateRange[1].toISOString().split('T')[0];
+    
+    const roomDetails = [];
 
-    console.log({ checkInDate, checkOutDate });
-    try {
-        const response = await fetch('http://localhost:3001/book', {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ checkInDate, checkOutDate, guests }),
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Data:', typeof data); 
+    for (let i = 0; i < rooms; i++) {
+        const roomDetail = {
+            checkInDate,
+            checkOutDate,
+            guests: guests[i+1]
+        };
+        roomDetails.push(roomDetail);
+    }
+    selectedRooms=[];
+    console.log(roomDetails);
+    await checkAvailability(roomDetails);
+
+   });
+});
+var selectedRooms = [];
+async function checkAvailability(roomDetails, index = 0) {
+    const data = await fetchRoomDetails(roomDetails[index]);
+    console.log('Data:', typeof data); 
               console.log('Success:', data);
               const roomsContainer = document.getElementById('room-options');
+              roomsContainer.innerHTML = '';
               data.forEach(room => {
                 const roomElement = document.createElement('div');
                 roomElement.innerHTML = `
@@ -153,32 +172,37 @@ $('#check-availability').click(async function() {
                        </div>
                      `;
                 roomsContainer.appendChild(roomElement);
-            });
-          })
-          .catch((error) => {
-              console.error('Error:', error);
-          })
-    }catch(error){
-        alert('Error: ' + error.message);
-    }
+                
+                const selectButton = roomElement.querySelector('.select-button button');
+               
+                    selectButton.addEventListener('click', async function() {
+        selectedRooms.push(room);
+        console.log(selectedRooms.length);
+        console.log('roomDetails:'+roomDetails.length);
+        if (selectedRooms.length < roomDetails.length) {
+            roomDetails[selectedRooms.length].guests = guests[selectedRooms.length+1];
+            console.log("call next room");
+            await checkAvailability(roomDetails, selectedRooms.length);
+        }
+        else{
+            console.log('Go to purchase');
+
+        }
         
-        
-    //     if (!response.ok) throw new Error(await response.text());
-    
-    //     const room = await response.json();
-    //     document.getElementById('room-options').innerHTML = `
-    //       <img src="${room.imagePath}" alt="Room" />
-    //       <h2>Type: ${room.type}</h2>
-    //       <p>Capacity: ${room.capacity}</p>
-    //       <p>Price per night: ${room.price_per_night}</p>
-    //       <p>Amenities:</p>
-    //       <ul>
-    //         <li>Breakfast: ${room.amenities.breakfast ? 'Yes' : 'No'}</li>
-    //         <li>Accessible: ${room.amenities.accessible ? 'Yes' : 'No'}</li>
-    //       </ul>
-    //     `;
-    //   } catch (error) {
-    //     alert('Error: ' + error.message);
-    //   }
-  });
+    });
 });
+}
+
+async function fetchRoomDetails(roomDetail) {
+    const response = await fetch('http://localhost:3001/book', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(roomDetail),
+    });
+    const data = await response.json();
+    return data;
+}
+
