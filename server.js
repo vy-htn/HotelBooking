@@ -1,3 +1,7 @@
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+global.$= require('jquery');
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
@@ -11,7 +15,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/images', express.static('images'));
 
-mongoose.connect('mongodb://localhost:27017/hotel_booking',{ useNewUrlParser: true, useUnifiedTopology: true }) 
+mongoose.connect('mongodb://localhost:27017/hotel_booking') 
 const db = mongoose.connection;
 db.once('error', (error) => {
     console.error('Database connection error:', error);
@@ -142,6 +146,9 @@ app.post('/book', async (req, res) => {
     }
     
   });
+  app.get('/', (req,res) =>{
+    res.render
+  })
   app.get('/home', (req, res) => {
     res.render('homepage');
   });
@@ -173,8 +180,10 @@ app.post('/book', async (req, res) => {
   app.get('/facilities', (req, res) => {
     res.render('facilities');
   });
-  
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => console.log(`Listening on port ${port}`))
+}
 
-
+module.exports =app;
