@@ -21,6 +21,7 @@
     "jquery": "^3.7.1",
     "mongoose": "^8.0.0",
     "morgan": "^1.10.0",
+    "stryker": "^0.35.1",
     "text-encoding": "^0.7.0"
   },
   "devDependencies": {
@@ -28,6 +29,9 @@
     "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^22.1.0",
     "nodemon": "^3.0.1",
+    "stryker-api": "^0.24.1",
+    "stryker-javascript-mutator": "^0.14.1",
+    "stryker-jest-runner": "^1.4.1",
     "supertest": "^6.3.3"
   }
 }
