@@ -22,13 +22,10 @@ jobs:
       with:
         node-version: '14'
 
-    - name: Change to the server directory
-      run: cd server
-
     - name: Install dependencies
-      run: npm install
+      run: npm install --prefix server
 
     - name: Run tests
-      run: npm test
+      run: npm test --prefix server
 
    
