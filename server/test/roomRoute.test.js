@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../server'); 
+const mongoose = require('mongoose');
 
 
 describe('call rooms available', () => {
@@ -16,6 +17,7 @@ describe('call rooms available', () => {
           });
 
       expect(response.status).toBe(200);
+
   });
 
   test('should return 404 when no suitable rooms are available', async () => {
@@ -32,5 +34,10 @@ describe('call rooms available', () => {
 
       expect(response.status).toBe(404);
       expect(response.text).toBe('No rooms available that can accommodate the number of guests.');
+  });
+  afterAll(async () => {
+    // Clean up any resources after all tests
+    // For example, close database connections
+    await mongoose.connection.close();
   });
 });

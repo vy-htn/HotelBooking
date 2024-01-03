@@ -1,7 +1,9 @@
 const request = require('supertest');
 const app = require('../server'); 
+const mongoose = require('mongoose');
 
 describe('User Routes', () => {
+
   const testUser = {
     firstname: 'John',
     lastname: 'Doe',
@@ -9,7 +11,12 @@ describe('User Routes', () => {
     phone: '1234567890',
     password: 'password123',
   };
-
+  const testFailUser = {
+    firstname: 'John',
+    lastname: 'Doe',
+    phone: '1234567890',
+    password: '',
+  };
   it('should register a new member', async () => {
     const response = await request(app)
       .post('/users/register')
@@ -18,7 +25,14 @@ describe('User Routes', () => {
     expect(response.status).toBe(200);
     expect(response.text).toBe('Member Registered Successfully');
   });
+  it('should handle register error', async () => {
+    const response = await request(app)
+      .post('/users/register')
+      .send(testFailUser);
 
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error');
+  });
   it('should create a new user', async () => {
     const response = await request(app)
       .post('/users/create-user')

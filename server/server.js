@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/hotel_booking')
 const db = mongoose.connection;
 db.once('error', (error) => {
     console.error('Database connection error:', error);
-  });
+});
 db.once('open', () => {
 console.log('Database connected');
 });
