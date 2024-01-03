@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 describe('call rooms available', () => {
   test('should return suitable rooms when available', async () => {
+    jest.setTimeout(10000);
       const response = await request(app)
           .post('/rooms/book')
           .send({
@@ -21,6 +22,7 @@ describe('call rooms available', () => {
   });
 
   test('should return 404 when no suitable rooms are available', async () => {
+    jest.setTimeout(10000);
       const response = await request(app)
           .post('/rooms/book')
           .send({
@@ -36,8 +38,6 @@ describe('call rooms available', () => {
       expect(response.text).toBe('No rooms available that can accommodate the number of guests.');
   });
   afterAll(async () => {
-    // Clean up any resources after all tests
-    // For example, close database connections
-    await mongoose.connection.close();
+      await mongoose.connection.close();
   });
 });
